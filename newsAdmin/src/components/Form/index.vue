@@ -6,7 +6,7 @@
     </div>
     <!-- 封装elForm -->
     <el-form
-      ref="formRef"
+      ref="ruleFormRef"
       :label-width="labelWidth"
       label-position="left"
       hide-required-asterisk
@@ -14,21 +14,20 @@
       :model="formData"
     >
       <el-row :gutter="20">
-        <!-- 根据配置动态添加 -->
+        <!-- 根据配置动态添加el-form-item -->
         <template v-for="item in formItems">
-          <el-col v-bind="colLayout" class="inputbox">
-            <slot :name="item.lSlot"> </slot>
+          <el-col v-bind="colLayout" :key="item.prop">
             <el-form-item
               v-if="!item.display"
               :label="item.label"
               label-position="left"
               :prop="item.prop"
               :style="itemStyle"
-              :key="item.prop"
-              style="flex: 1"
             >
               <!-- 输入框 和 密码框 -->
-              <template v-if="item.type === 'input' || item.type === 'password'">
+              <template
+                v-if="item.type === 'input' || item.type === 'password'"
+              >
                 <el-input
                   :placeholder="item.placeHolder"
                   :show-password="item.type === 'password'"
@@ -42,7 +41,7 @@
                   :placeholder="item.placeHolder"
                   v-model="formData[`${item.prop}`]"
                 >
-                  <!-- 下拉框 -->
+                  <!-- 下拉属性 -->
                   <el-option
                     v-for="option in item.options"
                     :label="option.label"
@@ -53,19 +52,21 @@
               </template>
               <!-- 时间框 -->
               <template v-else-if="item.type === 'datepicker'">
-                <el-date-picker style="width: 100%" v-model="formData[`${item.prop}`]">
+                <el-date-picker
+                  style="width: 100%"
+                  v-model="formData[`${item.prop}`]"
+                >
                 </el-date-picker>
               </template>
-              <!-- 文本框 -->
+              <!--  -->
               <template v-else-if="item.type === 'textarea'">
-                <el-form-item style="width: 100%; height: 100%">
+                <el-form-item style="height: 120px">
                   <el-input
                     type="textarea"
                     v-model="formData[`${item.prop}`]"
                   ></el-input> </el-form-item
               ></template>
             </el-form-item>
-            <slot :name="item.rSlot"> </slot>
           </el-col>
         </template>
       </el-row>
@@ -77,68 +78,76 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import type { FormInstance, FormRules } from "element-plus"
-import { defineEmits, reactive, ref, watch } from "vue"
-interface Props {
-  formDatas?: Object // 表单数据
-  formItems?: Array<any> // 表单框数据
-  rules?: FormRules // 表单校验规则
-  labelWidth?: string // label宽度
-  itemStyle?: Object | string //   item样式
-  colLayout?: Object // 行排列大小
-}
-const props = withDefaults(defineProps<Props>(), {
-  formDatas: () => {
-    return {}
-  },
-  formItems: () => [],
-  rules: () => {
-    return {}
-  },
-  colLayout: () => {
+<script>
+export default {
+  name: "Form",
+  data() {
     return {
-      xl: 6,
-      lg: 8, // ≥1200px
-      md: 12, // ≥992px
-      sm: 24, // ≥768px
-      xs: 24 // <768px
+      formData: {}
     }
   },
-  itemStyle: () => {
-    return {}
+  props: {
+    // 表单数据
+    formDatas: {
+      require: true
+    },
+    // 表单状态数据
+    formItems: { type: Array, default: () => [] },
+    // label宽度
+    labelWidth: { type: String, default: "" },
+    // 行排列数据
+    colLayout: {
+      type: Object,
+      default: () => ({
+        xl: 6,
+        lg: 8, // ≥1200px
+        md: 12, // ≥992px
+        sm: 24, // ≥768px
+        xs: 24 // <768px
+      })
+    },
+    // 表单规则
+    rules: {
+      type: Object,
+      default: () => {}
+    }, // 表单行样式
+    itemStyle: {
+      type: Object,
+      default: () => {}
+    }
   },
-  labelWidth: "80px"
-})
-const emit = defineEmits(["formDataUp"])
-let formData = reactive({ ...props.formDatas })
-watch(
-  formData,
-  (newValue, oldValue) => {
-    emit("formDataUp", newValue)
+  watch: {
+    formData: {
+      handler(val) {
+        this.$store.commit("unify/saveData", val)
+      },
+      deep: true
+    },
+    formDatas: {
+      handler() {
+        this.formData = { ...this.formDatas }
+      },
+      deep: true
+    }
   },
-  { deep: true }
-)
-const formRef = ref<FormInstance>()
-
-const validates = async () => {
-  return await formRef.value?.validate((valid: boolean) => {
-    return valid
-  })
+  created() {
+    // 初始化表单数据
+    this.formData = { ...this.formDatas }
+  },
+  methods: {
+    // 触发表单校验
+    validates() {
+      let validate = false
+      this.$refs.ruleFormRef.validate((valid) => {
+        validate = valid
+      })
+      return validate
+    }
+  }
 }
-
-defineExpose({
-  formData,
-  validates
-})
 </script>
 
 <style lang="less">
-.inputbox {
-  width: 100%;
-  display: flex !important;
-  align-items: center;
-}
 .el-form-item__error {
   left: 50% !important;
 

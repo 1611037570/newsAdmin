@@ -1,62 +1,56 @@
 <template>
   <div class="search">
-    <Form v-bind="props.searchConfig" ref="formRef">
+    <Form v-bind="formConfig" ref="formRef">
       <template #footer>
         <div class="btns">
-          <el-button type="primary" @click="reset()">重置</el-button>
-          <el-button type="primary" @click="select()">搜索 </el-button>
+          <el-button icon="el-icon-refresh" @click="reset()">重置</el-button>
+          <el-button icon="el-icon-search" @click="select()">搜索</el-button>
         </div>
       </template>
     </Form>
   </div>
 </template>
 
-<script setup lang="ts">
-import Form from "@/components/Form/index.vue"
-import { useTableStore } from "@/stores/table"
-import { ref } from "vue"
-const store = useTableStore()
-type Props = {
-  searchConfig: { [key: string]: any }
-}
-
-const props = withDefaults(defineProps<Props>(), {})
-
-let formRef = ref()
-// 清空搜索表单
-const reset = () => {
-  store.search = {}
-  for (let key in formRef.value.formData) {
-    formRef.value.formData[key] = ""
-  }
-  store.renewTbale()
-}
-// 搜索提交事件
-const select = async () => {
-  if (props.searchConfig.rules) {
-    // 有校验规则
-    if (await formRef.value.validates) {
-      store.search = formRef.value.formData
+<script>
+import { mapGetters } from "vuex"
+export default {
+  name: "Search",
+  data() {
+    return {}
+  },
+  computed: {
+    ...mapGetters("unify", {
+      config: "getData"
+    }),
+    ...mapGetters("unify", {
+      page: "getPage"
+    })
+  },
+  props: {
+    // 表单配置
+    formConfig: {
+      type: Object
     }
-  } else {
-    // 无校验规则
-    store.search = formRef.value.formData
+  },
+  methods: {
+    reset() {
+      this.$store.commit("unify/delData")
+      this.$store.dispatch("unify/getList")
+    },
+    select() {
+      this.$store.commit("unify/saveData", this.$refs.formRef.formData)
+
+      let page = this.page
+      page.pageIndex = 0
+      this.$store.commit("unify/savePage", page)
+      this.$store.dispatch("unify/getList", { serach: true })
+    }
   }
-  store.renewTbale()
 }
-onBeforeMount(() => {
-  store.search = {}
-})
 </script>
 
 <style lang="less" scoped>
 .search {
-  box-sizing: border-box;
-  padding: 10px;
-  background-color: #fff;
-  // display: flex;
-  .btns {
-    justify-items: end;
-  }
+  margin-bottom: 20px;
 }
 </style>
