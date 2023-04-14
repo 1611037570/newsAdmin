@@ -42,6 +42,10 @@ export const useTableStore = defineStore("table", {
           ...this.search
         }
       }
+<<<<<<< HEAD
+=======
+      console.log("object 11:>> ", data)
+>>>>>>> 6318332f5c1ce97d497e2cc7ee3769e2dc08ab44
       let res
 
       res = await unify({ name: this.name, conut: true, data })
@@ -50,6 +54,10 @@ export const useTableStore = defineStore("table", {
       res = await unify({ name: this.name, ...this.page, data })
       if (res.code === 200 && res.data != null) this.list = res.data
       else ElMessage.error("表单数据未请求到数据")
+<<<<<<< HEAD
+=======
+      console.log("res :>> ", res)
+>>>>>>> 6318332f5c1ce97d497e2cc7ee3769e2dc08ab44
     },
 
     // 删除表单数据
