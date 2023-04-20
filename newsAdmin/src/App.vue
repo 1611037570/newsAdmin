@@ -25,14 +25,9 @@ const inImgBtn = {
     return new NewInnerimgBtn()
   }
 }
-<<<<<<< HEAD
 Boot.registerMenu(inImgBtn)
 
 Boot.registerMenu(innerTextBtn)
-=======
-Boot.registerMenu(innerTextBtn)
-Boot.registerMenu(inImgBtn)
->>>>>>> 6318332f5c1ce97d497e2cc7ee3769e2dc08ab44
 </script>
 
 <style lang="less" scoped>

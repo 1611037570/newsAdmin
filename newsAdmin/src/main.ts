@@ -22,19 +22,11 @@ import cache from "./utils/cache"
 import ScoketService from "./utils/ws"
 ScoketService.inStance.connect()
 
-<<<<<<< HEAD
 const app = createApp(App)
 // // 注册 resize 指令
 import { install as resizeInstall } from "@/utils/useReSize"
 resizeInstall(app)
 
-=======
-import useDivView from "@/utils/useDivView"
-
-const app = createApp(App)
-
-app.directive("div", useDivView)
->>>>>>> 6318332f5c1ce97d497e2cc7ee3769e2dc08ab44
 app.config.globalProperties.$bus = Mit
 app.config.globalProperties.$cache = cache
 app.config.globalProperties.$socket = ScoketService.inStance

@@ -1,5 +1,4 @@
 import { img } from "@/config/index.js"
-<<<<<<< HEAD
 
 /**
  * 从字符串中获取第一个img标签的src属性值
@@ -14,13 +13,4 @@ export const imgFilter = (str: any) => {
     if (match) data = match[1] // 获取第一个捕获组的值，即img标签的src属性值
   }
   return data // 返回img标签的src属性值或默认值
-=======
-export const imgFilter = (str: any) => {
-  let data
-  str.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/, function (match: any, capture: any) {
-    data = capture
-  })
-  if (data) return data
-  else return img
->>>>>>> 6318332f5c1ce97d497e2cc7ee3769e2dc08ab44
 }

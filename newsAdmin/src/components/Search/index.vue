@@ -15,6 +15,7 @@
 import Form from "@/components/Form/index.vue"
 import { useTableStore } from "@/stores/table"
 import { ref } from "vue"
+let timerId: any = reactive({})
 const store = useTableStore()
 type Props = {
   searchConfig: { [key: string]: any }
@@ -33,16 +34,13 @@ const reset = () => {
 }
 // 搜索提交事件
 const select = async () => {
-  if (props.searchConfig.rules) {
-    // 有校验规则
-    if (await formRef.value.validates) {
-      store.search = formRef.value.formData
-    }
-  } else {
-    // 无校验规则
-    store.search = formRef.value.formData
+  if (JSON.stringify(timerId) !== "{}") {
+    clearTimeout(timerId)
   }
-  store.renewTbale()
+  timerId = setTimeout(() => {
+    store.search = formRef.value.formData
+    store.renewTbale()
+  }, 1000)
 }
 onBeforeMount(() => {
   store.search = {}
