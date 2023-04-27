@@ -45,7 +45,8 @@ export const all = async () => {
   arr.push(res.data[0].rows)
   return {
     data: arr,
-    xData: ["注册总数", "新闻总数", "分类总数", "文案总数"]
+    xData: ["注册总数", "新闻总数", "分类总数", "文案总数"],
+    text: "新闻总体数据"
   }
 }
 

@@ -11,14 +11,12 @@ import { ElMessage } from "element-plus"
 // pinia
 import { login } from "@/service/api/system"
 import { useSystemStore } from "@/stores/system"
-import { useTabsStore } from "@/stores/tab"
 // vue
 import { useRouter } from "vue-router"
 import { getCurrentInstance, ref } from "vue"
 // 自定义
 import { loginConfig } from "./account.config.js"
-import { DEFAULT_TABS } from "@/config"
-const tab = useTabsStore()
+
 const { proxy }: any = getCurrentInstance()
 const store = useSystemStore()
 const accountRef = ref<any>(Form)
@@ -37,8 +35,13 @@ const accountLogin = async () => {
       store.user = res.data[0]
       proxy.$cache.set("user", res.data[0])
       router.push("/")
-      tab.tabs = DEFAULT_TABS
-    } else ElMessage.error("账号或密码错误")
+    } else {
+      ElMessage({
+        showClose: true,
+        message: "账号或密码错误",
+        type: "error"
+      })
+    }
   }
 }
 

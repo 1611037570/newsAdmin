@@ -32,6 +32,8 @@ import { getCurrentInstance, ref } from "vue"
 import { useSystemStore } from "@/stores/system"
 import { unify, unifyRenew } from "@/service/api/unify"
 import { ElMessage } from "element-plus"
+import { DEFAULT_TABS } from "@/config"
+import { useTabsStore } from "@/stores/tab"
 
 // 使用 ref 创建响应式变量，避免手动维护状态
 const visible = ref(false)
@@ -83,6 +85,7 @@ const { proxy }: any = getCurrentInstance()
 
 // 获取路由实例
 const router = useRouter()
+const tab = useTabsStore()
 
 // 定义退出登录函数
 const exit = () => {
@@ -90,6 +93,7 @@ const exit = () => {
   store.user = { role: null, id: null, name: "" }
 
   // 清空 $cache 和 localStorage 中的系统信息
+  tab.tabs = [...DEFAULT_TABS]
   proxy.$cache.clear()
   localStorage.removeItem("system")
   proxy.$cache.del("system")

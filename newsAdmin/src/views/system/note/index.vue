@@ -26,6 +26,8 @@ const table = useTableStore()
 const callback = async (datas: any) => {
   // 数据格式化
   let { data, title } = datas
+  delete data.name
+
   let config = {
     name: table.name,
     data: { uid: system.user.id, ...data }

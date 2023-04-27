@@ -56,9 +56,7 @@ const edit = (row?: any) => {
       title: "创作新闻",
       path: "/main/add"
     })
-    router.push({
-      path: "/main/add"
-    })
+    router.push({ path: "/main/add" })
     return
   }
   // 编辑

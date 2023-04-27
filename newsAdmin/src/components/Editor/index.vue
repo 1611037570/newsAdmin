@@ -44,7 +44,6 @@ const editorRef = shallowRef() // 编辑器实例，必须用 shallowRef
 const text = ref("") // 内容 HTML
 
 // 上传图片操作
-<<<<<<< HEAD
 const fileRef = ref() // 创建上传文件的引用
 const innerImgClick = async () => {
   // 点击上传图片按钮
@@ -63,20 +62,6 @@ const innerImgClick = async () => {
   }
 }
 
-=======
-const fileRef = ref() // 上传文件ref
-const innerImgClick = async () => {
-  fileRef.value.click() // 打开传输层
-  fileRef.value.onchange = async function () {
-    if (this.files.length === 0) return // 没有文件
-    const file = this.files[0]
-    let image: any = await innerImg(file) // 执行上传图片过程
-    editorRef.value.dangerouslyInsertHtml(
-      `<p  style="text-align: center;"><img style="width: ${image.width}px;height:${image.height}px" src="${image.src}"></img></p>`
-    )
-  }
-}
->>>>>>> 6318332f5c1ce97d497e2cc7ee3769e2dc08ab44
 // 创建富文本实例操作
 const handleCreated = (editor: any) => {
   editorRef.value = editor // 记录 editor 实例，重要！

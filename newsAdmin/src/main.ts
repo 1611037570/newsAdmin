@@ -4,7 +4,7 @@ import App from "./App.vue"
 import router from "./router"
 import piniaPluginPersist from "pinia-plugin-persist" //引入pinia数据持久化插件
 import "./assets/base.less"
-
+import "element-plus/theme-chalk/index.css"
 // console.log("import.meta.env :>> ", import.meta.env.VITE_BASE_URL)
 
 // 全局事件总线

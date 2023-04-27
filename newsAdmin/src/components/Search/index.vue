@@ -15,7 +15,7 @@
 import Form from "@/components/Form/index.vue"
 import { useTableStore } from "@/stores/table"
 import { ref } from "vue"
-let timerId: any = reactive({})
+
 const store = useTableStore()
 type Props = {
   searchConfig: { [key: string]: any }
@@ -33,7 +33,8 @@ const reset = () => {
   store.renewTbale()
 }
 // 搜索提交事件
-const select = async () => {
+let timerId: any = reactive({})
+const select = () => {
   if (JSON.stringify(timerId) !== "{}") {
     clearTimeout(timerId)
   }

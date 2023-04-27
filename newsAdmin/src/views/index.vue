@@ -38,7 +38,6 @@ const store = useSystemStore()
   }
   :deep(.el-main) {
     box-sizing: border-box;
-    height: 100%;
     padding: 10px;
     background-color: #f5efe9;
   }

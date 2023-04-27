@@ -47,7 +47,11 @@ const props = withDefaults(defineProps<Props>(), {})
 let formRef = ref()
 const emit = defineEmits(["newCb", "editCb"])
 // 编辑or新建操作
+let timerId: any = reactive({})
 const handle = async () => {
+  if (JSON.stringify(timerId) !== "{}") {
+    clearTimeout(timerId)
+  }
   // 是否有校验规则并且是否校验通过
   if (props.formConfig.rules && !(await formRef.value.validates())) return
   // 数据查重校验
@@ -62,7 +66,9 @@ const handle = async () => {
     return
   }
   // 提交操作
-  commit()
+  timerId = setTimeout(() => {
+    commit()
+  }, 500)
 }
 // 数据查重校验
 const check = async () => {
@@ -77,7 +83,6 @@ const check = async () => {
       ElMessage.error("数据已存在！")
       return false
     }
-    // 严格模式查找数据
   }
   return true
 }

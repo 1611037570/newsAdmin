@@ -25,9 +25,9 @@ import { census, pie, user, all } from "./res"
 const { proxy }: any = getCurrentInstance()
 
 const callBack = (menu: any) => {
-  console.log("回调menu :>> ", menu)
+  renewEchart()
 }
-const menus = [{ label: "更新", callBack }, { label: "放大" }]
+const menus = [{ label: "更新", callBack }]
 
 let noteData = shallowRef<any>(await pie("note", "name", "文案总数"))
 let navData = shallowRef<any>(await pie("nav", "title", "分类总数"))

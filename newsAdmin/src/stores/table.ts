@@ -46,10 +46,9 @@ export const useTableStore = defineStore("table", {
 
       res = await unify({ name: this.name, conut: true, data })
       if (res.code === 200 && res.data != null) this.total = res.data[0].rows
-      else ElMessage.error("表单长度未请求到数据")
+
       res = await unify({ name: this.name, ...this.page, data })
       if (res.code === 200 && res.data != null) this.list = res.data
-      else ElMessage.error("表单数据未请求到数据")
     },
 
     // 删除表单数据
